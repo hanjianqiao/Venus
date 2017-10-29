@@ -10,12 +10,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+import com.lct.sim.simtools.ShellExecutor;
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -33,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+    // Example of a call to a native method
+    TextView tv = (TextView) findViewById(R.id.sample_text);
+    tv.setText(stringFromJNI());
     }
 
     @Override
@@ -53,8 +50,22 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_simulate:
+                String[] search = {
+                        "input keyevent 3",// 返回到主界面，数值与按键的对应关系可查阅KeyEvent
+                        "sleep 1",// 等待1秒
+                        "input swipe 600 400 200 400",// swipe
+                        "sleep 3",// 等待3秒
+                        "input swipe 200 400 600 400",// swipe
+                };
+                //如果input text中有中文，可以将中文转成unicode进行input,没有测试，只是觉得这个思路是可行的
+                ShellExecutor se = new ShellExecutor();
+                //search[5] = se.chineseToUnicode(search[5]);
+                se.execShell(search);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -65,4 +76,9 @@ public class MainActivity extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("native-lib");
+    }
 }

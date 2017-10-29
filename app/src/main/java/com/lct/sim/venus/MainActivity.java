@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.lct.sim.simtools.EventSender;
 import com.lct.sim.simtools.ShellExecutor;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 ShellExecutor se = new ShellExecutor();
                 //search[5] = se.chineseToUnicode(search[5]);
                 se.execShell(search);
+                break;
+            case R.id.action_sendevent:
+                EventSender evtSender = new EventSender();
+                evtSender.sampleCall();
                 break;
         }
 

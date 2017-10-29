@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.lct.sim.simtools.EventSender;
 import com.lct.sim.simtools.ShellExecutor;
+import com.lct.sim.simtools.TCPExecutor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 EventSender evtSender = new EventSender();
                 evtSender.sampleCall();
                 break;
+            case R.id.action_tcp:
+                new TCPExecutor().start();
         }
 
         return super.onOptionsItemSelected(item);
